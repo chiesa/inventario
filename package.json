@@ -20,5 +20,13 @@
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chiesa/inventario.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chiesa/inventario/issues"
+  },
+  "homepage": "https://github.com/chiesa/inventario#readme",
   "description": ""
 }
