@@ -3,9 +3,9 @@
     "express": "^4.17.3",
     "fs": "^0.0.1-security",
     "nodemon": "^2.0.15",
-    "main": "Node.js",
+    "main": "app.js",
     "scripts": {
-      "start": "node Node.js"
+      "start": "node app.js"
     }
   }
 }
