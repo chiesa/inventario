@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include("./partials/head.ejs") %>
-</head>
+<%- include("./partials/head.ejs") %>
 <body>
     <!-- Page Loader -->
-
     <%- include("./partials/nav.ejs") %>
 
     <div class="container-fluid tm-container-content tm-mt-60">
@@ -49,7 +46,7 @@
     </div>
     <%- include("./partials/footer.ejs") %>
     
-    <script src="js/plugins.js"></script>
+    <script src="/js/plugins.js"></script>
     <script>
         const trashcan = document.querySelector('a.delete');
         trashcan.addEventListener('click', (e) => {
@@ -60,6 +57,11 @@
             .then(response => response.json())
             .then(data => window.location.href = data.redirect)
             .catch(err => console.log(err));
+        });
+    </script>
+    <script>
+        $(window).on("load", function() {
+            $('body').addClass('loaded');
         });
     </script>
 </body>

@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const imgModel = require('./models.js')
 
 const app = express();
-const port = process.env.PORT || 443;
+const port = process.env.PORT ;
 
 app.use(express.static(__dirname));
 

@@ -191,7 +191,6 @@ a:hover { color:#009999; }
 
 .tm-hero {
     min-height: 200px;
-    background-image:url("/public/hero.jpg");
 }
 
 .tm-mt-60 { margin-top: 60px; }
