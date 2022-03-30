@@ -5,6 +5,31 @@
     <!-- Page Loader -->
     <%- include("./partials/nav.ejs") %>
 
+    
+<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="/public/hero.jpg"> <!--style="min-height:200px;background-image:url('/public/hero.jpg');"--> 
+    <% if(title=="All Object"){ %>
+        <form class="d-flex tm-search-form">
+            <input id="text" class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search" style="width: 80%;">
+            <select id="selectType">
+                <option value="name">nome</option>
+                <option value="type">tipo</option>
+                <option value="pos">posizione</option>
+            </select>
+            <button id="searching" class="btn btn-outline-success tm-search-btn" type="submit">
+                <i class="fas fa-search" style="color:white;"> Search </i>
+            </button>
+        </form>
+    <% } %>
+</div>
+
+<script>
+    searching.onclick = function(){
+        var pip = document.getElementById("selectType").value;
+        var elem = document.getElementById("text").value;
+        console.log(elem);
+    }
+</script>
+
     <div class="container-fluid tm-container-content tm-mt-60">
         <div class="row mb-4">
             <h1 class="col-6 tm-text-primary" style="color:rgb(72, 144, 252);margin-top:15px;margin-left:35px;">

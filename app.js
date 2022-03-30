@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const imgModel = require('./models.js')
 
 const app = express();
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8088;
 
 app.use(express.static(__dirname));
 
@@ -68,8 +68,10 @@ app.post('/', upload.single('image'), (req, res, next) => {
 });
 
 app.get('/', (req, res) => {
+  console.log("arrivo0");
     imgModel.find().sort({ createdAt: -1 })
       .then(result => {
+        console.log("arrivo");
         res.render('index', { obj: result, title: 'All Object' });
       })
       .catch(err => {
