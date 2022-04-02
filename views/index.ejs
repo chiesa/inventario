@@ -5,30 +5,31 @@
     <!-- Page Loader -->
     <%- include("./partials/nav.ejs") %>
 
+    <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="/public/hero.jpg"> <!--style="min-height:200px;background-image:url('/public/hero.jpg');"--> 
+        <% if(title=="All Object"){ %>
+            <form class="d-flex tm-search-form">
+                <input id="text" class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search" style="width: 80%;">
+                <select id="selectType">
+                    <option value="name">nome</option>
+                    <option value="type">tipo</option>
+                    <option value="pos">posizione</option>
+                </select>
+                <button id="searching" class="btn btn-outline-success tm-search-btn" type="button">
+                    <i class="fas fa-search" style="color:white;"> Search </i>
+                </button>
+            </form>
+        <% } %>
+    </div>
     
-<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="/public/hero.jpg"> <!--style="min-height:200px;background-image:url('/public/hero.jpg');"--> 
-    <% if(title=="All Object"){ %>
-        <form class="d-flex tm-search-form">
-            <input id="text" class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search" style="width: 80%;">
-            <select id="selectType">
-                <option value="name">nome</option>
-                <option value="type">tipo</option>
-                <option value="pos">posizione</option>
-            </select>
-            <button id="searching" class="btn btn-outline-success tm-search-btn" type="submit">
-                <i class="fas fa-search" style="color:white;"> Search </i>
-            </button>
-        </form>
-    <% } %>
-</div>
+    <script>
+        document.getElementById("searching").onclick = function(){
+            var tipo = document.getElementById('selectType').value;
+            var nome = document.getElementById("text").value;
+            window.history.replaceState({}, '', "search?" + tipo + "=" + nome); //set URL Param
+            $('#mainContent').load();
+        }
+    </script>
 
-<script>
-    searching.onclick = function(){
-        var pip = document.getElementById("selectType").value;
-        var elem = document.getElementById("text").value;
-        console.log(elem);
-    }
-</script>
 
     <div class="container-fluid tm-container-content tm-mt-60">
         <div class="row mb-4">
@@ -45,7 +46,7 @@
         </div>
         <% if (obj.length > 0) { %>
             
-                <div class="row tm-mb-90 tm-gallery">
+                <div id="agg" class="row tm-mb-90 tm-gallery">
                     <% obj.forEach(obj => { %>
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5" ">
                         <a class="single" href="/object/<%= obj._id %>" >
@@ -61,7 +62,24 @@
                     </div>
                 <% }) %>
                 </div>
-            
+           
+                <script>
+                    const aggiornaFoto =  (num) => {
+                      $.ajax({
+                             url: "/parz/?p="+num,
+                             success: (data) =>{
+                                $(obj).array(data.obj)
+                             }
+                          })
+                          .done(function( data ) {
+                              console.log("arrivo")
+                             console.log( "Sample of data:", data );
+                             console.log(obj);
+                             $('#agg').html(data.message);
+                             //$('.obj').json(data.obj);
+                          });
+                        };
+                </script>
         <% } else { %>
             <p>There are no object to display...</p>
         <% } %>
@@ -69,13 +87,13 @@
         
     
     <!-- row -->
-        <!-- TODO: Modificare per avere piu pagine e non tutte le immagini su una pagina
+        <!-- TODO: Modificare per avere piu pagine e non tutte le immagini su una pagina-->
         <div class="row tm-mb-90">
             <div class="col-12 d-flex justify-content-between align-items-center tm-paging-col">
                 <a href="javascript:void(0);" class="btn btn-primary tm-btn-prev mb-2 disabled">Previous</a>
                 <div class="tm-paging d-flex">
 				    <a href="javascript:void(0);" class="active tm-paging-link">1</a>
-                    <a href="javascript:void(0);" class="tm-paging-link">2</a>
+                    <a href="javascript:aggiornaFoto(2);" class="tm-paging-link">2</a>
                     <a href="javascript:void(0);" class="tm-paging-link">3</a>
                     <a href="javascript:void(0);" class="tm-paging-link">4</a>
                 </div>
@@ -83,7 +101,7 @@
             </div>            
         </div>
     </div>
--->
+
      <!-- container-fluid, tm-container-content -->
 
     <%- include("./partials/footer.ejs") %>

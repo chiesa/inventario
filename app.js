@@ -5,7 +5,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const bodyParser = require('body-parser');
-const imgModel = require('./models.js')
+//const imgModel = require('./models.js')
+const imgModel = require('./models1.js')
+const assert = require('assert');
 
 const app = express();
 const port = process.env.PORT || 8088;
@@ -22,6 +24,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(port, console.log(`Listening on port ${port}`)))
   .catch(err => console.log(err));
 
+
 // create  storage path to save
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -33,16 +36,117 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+//index get
+app.get('/', (req, res) => {
+  if(!req.query.p) { 
+    imgModel.find( {},{maxTimeMS:100,_id:1,img:1}).sort({ createdAt: -1 })
+    .skip(0)
+    .limit(8)
+    .then(result => {
+      res.render('index', { obj: result, title: 'All Object' });
+    })
+    .catch(err => {
+    console.log(err);
+    })
+  } else {
+    const pos = (req.query.p -1)*10;
+    imgModel.find( {},{maxTimeMS:100,_id:1,img:1}).sort({ createdAt: -1 })
+    .skip(pos)
+    .limit(8)
+    .then(result => {
+      res.render('index', { obj: result, title: 'All Object' });
+    })
+    .catch(err => {
+    console.log(err);
+    })
+  }
+});
+
+app.get('/parz', (req, res) => {
+  if(!req.query.p) { 
+    console.log(err);
+  } else {
+    const pos = (req.query.p-1)*10;
+    imgModel.find( {},{maxTimeMS:100,_id:1,img:1}).sort({ createdAt: -1 })
+    .skip(pos)
+    .limit(8)
+    .then(result => {
+      res.json({ obj: result, title: 'All Object' });
+    })
+    .catch(err => {
+    console.log(err);
+    })
+  }
+});
+
+
+app.get('/search', (req,res) => {
+  //let parmeter = req.params.par;
+  let value;
+  let query = req.query;
+  var key = (Object.keys(query)[0]);
+  switch (key){
+    case "name":
+      value = query.name;
+      imgModel.find({
+        'name' : {
+          '$regex': new RegExp(value), 
+          '$options': 'i'
+        }
+      },(err, data) => {
+        //console.log(data.length())
+        res.render('index', { obj: data, title: 'All Object' });
+      }).clone().catch(err => {
+        console.log(err);
+      })
+      break;
+    case "type":
+      value = query.type;
+      imgModel.find({
+        'type' : {
+          '$regex': new RegExp(value), 
+          '$options': 'i'
+        }
+      },(err, data) => {
+        //console.log(data.length())
+        res.render('index', { obj: data, title: 'All Object' });
+      }).clone().catch(err => {
+        console.log(err);
+      })
+      break;
+    case "pos":
+      value = query.pos;
+      imgModel.find({
+        'pos' : {
+          '$regex': new RegExp(value), 
+          '$options': 'i'
+        }
+      },(err, data) => {
+        //console.log(data.length())
+        res.render('index', { obj: data, title: 'All Object' });
+      }).clone().catch(err => {
+        console.log(err);
+      })
+      break;
+  }
+  key = 'desc'; /*TODO: modificare quando si cambia la struttura del DB*/
+  console.log(value);
+
+
+});
+
 app.get('/create', (req, res) => {
+    /*
     imgModel.find({}, (err, items) => {
         if (err) {
             console.log(err);
             res.status(500).send('An error occurred', err);
         }
         else {
-            res.render('imagePage', { title: "create", items: items });
-        }
-    });
+    */
+            res.render('imagePage', { title: "create" });
+    //    }
+    //});
 });
 
 app.post('/', upload.single('image'), (req, res, next) => {
@@ -66,18 +170,6 @@ app.post('/', upload.single('image'), (req, res, next) => {
         }
     });
 });
-
-app.get('/', (req, res) => {
-  console.log("arrivo0");
-    imgModel.find().sort({ createdAt: -1 })
-      .then(result => {
-        console.log("arrivo");
-        res.render('index', { obj: result, title: 'All Object' });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  });
 
 app.get('/object/:id', (req, res) => {
     const id = req.params.id;
@@ -133,4 +225,4 @@ app.post('/modify/:id', upload.single('image'), (req, res, next) => {
 // 404 page
 app.use((req, res) => {
   res.status(404).render('404', { title: '404' });
-});
+})
