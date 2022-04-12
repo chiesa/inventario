@@ -6,7 +6,6 @@
     <%- include("./partials/nav.ejs") %>
 
     <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="/public/hero.jpg"> <!--style="min-height:200px;background-image:url('/public/hero.jpg');"--> 
-        <% if(title=="All Object"){ %>
             <form class="d-flex tm-search-form">
                 <input id="text" class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search" style="width: 80%;">
                 <select id="selectType">
@@ -18,7 +17,6 @@
                     <i class="fas fa-search" style="color:white;"> Search </i>
                 </button>
             </form>
-        <% } %>
     </div>
     
     <script>
@@ -32,14 +30,14 @@
 
 
     <div class="container-fluid tm-container-content tm-mt-60">
-        <div class="row mb-4">
-            <h1 class="col-6 tm-text-primary" style="color:rgb(72, 144, 252);margin-top:15px;margin-left:35px;">
+        <div class="row mb-4" style="margin-left:4%;width: 90%;">
+            <h1 class="col-6 tm-text-primary" style="color:rgb(72, 144, 252)">
                 OGGETTI
             </h1>
             <!-- TODO: Modificare per avere piu pagine e non tutte le immagini su una pagina
             <div class="col-6 d-flex justify-content-end align-items-center">
                 <form action="" class="tm-text-primary">
-                    Page <input type="text" value="1" size="1" class="tm-input-paging tm-text-primary"> of 200
+                    Page <input type="text" value="<%= page %>" class="tm-input-paging tm-text-primary"> <%= Math.floor((num)/8)%>
                 </form>
             </div>
             -->
@@ -53,60 +51,65 @@
                         <figure class="effect-ming tm-video-item"">
                             <img src="data:image/<%=obj.img.contentType%>;base64,
                                     <%=obj.img.data.toString('base64')%>" >
+                            <!--
                             <figcaption class="d-flex align-items-center justify-content-center" style="text-align:center">
                                 <h2><%= obj.name %><br></h2>
                                 <a class="single" href="/object/<%= obj._id %>" >View more</a>
                             </figcaption>
+                            -->
                         </figure>
                         </a>
                     </div>
                 <% }) %>
                 </div>
            
-                <script>
-                    const aggiornaFoto =  (num) => {
-                      $.ajax({
-                             url: "/parz/?p="+num,
-                             success: (data) =>{
-                                $(obj).array(data.obj)
-                             }
-                          })
-                          .done(function( data ) {
-                              console.log("arrivo")
-                             console.log( "Sample of data:", data );
-                             console.log(obj);
-                             $('#agg').html(data.message);
-                             //$('.obj').json(data.obj);
-                          });
-                        };
-                </script>
+                <div id="target">
+                </div>
         <% } else { %>
             <p>There are no object to display...</p>
         <% } %>
     </div>
         
-    
+    <% if(title=="All Object"){ %>            
     <!-- row -->
-        <!-- TODO: Modificare per avere piu pagine e non tutte le immagini su una pagina-->
-        <div class="row tm-mb-90">
+    <% if (page > 0) { %>
+        <!-- TODO: Sistemare grafica, non è centrato-->
+        <div class="row tm-mb-90" style="width:100%">
             <div class="col-12 d-flex justify-content-between align-items-center tm-paging-col">
-                <a href="javascript:void(0);" class="btn btn-primary tm-btn-prev mb-2 disabled">Previous</a>
+                <%if(page!=1){%>
+                    <a href="/?p=<%= page-1 %>" class="btn btn-primary tm-btn-prev mb-2">Last Page</a>
+                <%} else{ %>
+                    <a href="/" class="btn btn-primary tm-btn-prev mb-2 disable">No Page Before</a>
+                <%}%>
                 <div class="tm-paging d-flex">
-				    <a href="javascript:void(0);" class="active tm-paging-link">1</a>
-                    <a href="javascript:aggiornaFoto(2);" class="tm-paging-link">2</a>
-                    <a href="javascript:void(0);" class="tm-paging-link">3</a>
-                    <a href="javascript:void(0);" class="tm-paging-link">4</a>
+                
+                    <% if(page<4){
+                            var start = 1;
+                        }else if(page>= Math.floor((num)/8)-3){
+                            var start = Math.floor((num)/8)-6;
+                        } else {
+                            var start = page - 3;
+                    }%>
+                    
+                    <% for (var i=start; i <= start+6;  i++ ) { %>
+                        <a href='/?p=<%= i %>' class='tm-paging-link'><%= i %></a>
+                    <% } %>
                 </div>
-                <a href="javascript:void(0);" class="btn btn-primary tm-btn-next">Next Page</a>
+                <%if(page!=Math.floor((num)/8)){ %>
+                    <a href="/?p=<%= parseInt(page)+1 %>" class="btn btn-primary tm-btn-next">Next Page</a>
+                <%} else{ %>
+                    <a href="/?p=<%= page %>" class="btn btn-primary tm-btn-next">No More Page</a>
+                <%}%>
             </div>            
         </div>
-    </div>
-
-     <!-- container-fluid, tm-container-content -->
+    <% } %>
+    <% } %>
+    <!-- container-fluid, tm-container-content -->
 
     <%- include("./partials/footer.ejs") %>
     
     <script src="/js/plugins.js"></script>
+
     <script>
         $(window).on("load", function() {
             $('body').addClass('loaded');

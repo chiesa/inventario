@@ -1,0 +1,26 @@
+{
+  "api": {
+    "aws": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AWS_IAM"
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2023-04-12T08:53:24.472Z",
+                "description": ""
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

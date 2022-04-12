@@ -17,14 +17,36 @@
                     <div class="form-group">
                         <div>
                             <input type="file" id="image" 
-                                   name="image" value="" required class="btn btn-primary">
+                                name="image" value="" required class="btn btn-primary" style="width: 100%;">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-control rounded-0" style="width:30%;border-color: transparent;display: inline;">TIPOLOGIA:</div>
+                        <select id="selectType" class="form-control rounded-0" style="width:60%;display: inline;text-align:center;">
+                            <% 
+                                array.forEach( (elem) =>{ %>
+                                    <option value=<%= elem %> ><%= elem %></option>
+                                <% })
+                            %>
+                        </select>
                     </div>
                     <div class="form-group">
                         <textarea rows="8" name="desc" class="form-control rounded-0" placeholder="description"></textarea>
                     </div>
                     <div class="form-group">
+                        <input type="text" name="author" class="form-control rounded-0" placeholder="autore"/>
+                    </div>
+                    <div class="form-group">
                         <input type="text" name="pos" class="form-control rounded-0" placeholder="position"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="stanza" class="form-control rounded-0" placeholder="stanza"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="scatola" class="form-control rounded-0" placeholder="scatola"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="num_id" class="form-control rounded-0" placeholder="numero identificativo"/>
                     </div>
                     <div class="form-group tm-text-right">
                         <button type="submit" class="btn btn-primary">Send</button>

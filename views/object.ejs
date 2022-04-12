@@ -7,24 +7,24 @@
 
     <div class="container-fluid tm-container-content tm-mt-60">
         <div class="row mb-4">
+            <% if(obj.name){ %> 
             <h2 class="col-12 tm-text-primary" style="color:rgb(72, 144, 252)"><%= obj.name %></h2>
+            <% } %>
         </div>
-        <div class="row tm-mb-90">
-            <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
+        <div class="row tm-mb-90" style="width:90%;">
+            <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12" >
                 <img alt="Image" class="img-fluid"
                      src="data:image/<%=obj.img.contentType%>;base64,
-                     <%=obj.img.data.toString('base64')%>" style="max-height:300px;margin:auto;margin-left: auto;margin-right: auto;">
+                     <%=obj.img.data.toString('base64')%>" style="max-height:700px;display:block;margin-left:auto;margin-right:3px;">
             </div>
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
                 <div class="tm-bg-gray tm-video-details">
+                    <% if(obj.desc){ %> 
                     <p class="mb-4">
-                        <h3 class="tm-text-gray-dark mb-3" style="color:rgb(72, 144, 252)">Description: </h3>
-                        <%= obj.desc %> <br>
+                        <h3 style="color:rgb(72, 144, 252);font-size:20px;">Description: </h3>
+                        <%= (obj.desc) %> <br>
                     </p>
-                    <div class="text-center mb-5">
-                        <a name="modify" class="modify btn btn-primary tm-btn-big" href="/modify/<%= obj._id %>">modify</a>
-                        <a name="delete" class="delete btn btn-primary tm-btn-big" data-doc="<%= obj._id %>">delete</a>
-                    </div>                    
+                    <%}%>
                     <!--<div class="mb-4 d-flex flex-wrap">
                         
                         <div class="mr-4 mb-2">
@@ -36,10 +36,53 @@
                         </div>
                         
                     </div>-->
+                    <% if(obj.type){ %> 
                     <div class="mb-4">
-                        <h3 class="tm-text-gray-dark mb-3" style="color:rgb(72, 144, 252)">Position: </h3>
-                        <p style="color:rgb(72, 144, 252)"><%= obj.pos %></p>
+                        <h3 style="color:rgb(72, 144, 252);font-size:20px;display:inline;">Type: </h3>
+                        <p style="color:rgb(72, 144, 252);display:inline;"><%= obj.type %></p>
                     </div>
+                    <%}%>
+
+                    <!-- bottoni per eliminare e modificare oggetti -->
+                    <div class="text-center mb-5" style="display:inline;width:90%">
+                        <a name="modify" class="modify btn btn-primary tm-btn-big" href="/modify/<%= obj._id %>" style="width:100%">modify</a>
+                    </div>
+                    <div style="height: 3px;"></div>
+                    <div class="text-center mb-5" style="display:inline;width:90%;margin-top:3px;">
+                        <a name="delete" class="delete btn btn-primary tm-btn-big" data-doc="<%= obj._id %>" style="width:100%">delete</a>
+                    </div>                    
+                    <div style="height:20px;"></div>
+                    
+                    <% if(obj.autor){ %> 
+                    <div class="mb-4">
+                        <h3 style="color:rgb(72, 144, 252);font-size:20px;display:inline;">Author: </h3>
+                        <p style="color:rgb(72, 144, 252);display:inline;"><%= obj.autor %></p>
+                    </div>
+                    <%}%>
+                    <% if(obj.pos){ %> 
+                    <div class="mb-4">
+                        <h3 style="color:rgb(72, 144, 252);font-size:20px;display:inline;">Position: </h3>
+                        <p style="color:rgb(72, 144, 252);display:inline;"><%= obj.pos %></p>
+                    </div>
+                    <%}%>
+                    <% if(obj.stanza){ %> 
+                        <div class="mb-4">
+                            <h3 style="color:rgb(72, 144, 252);font-size:20px;display:inline;">stanza: </h3>
+                            <p style="color:rgb(72, 144, 252);display:inline;"><%= obj.stanza %></p>
+                        </div>
+                    <%}%>
+                    <% if(obj.scatola){ %> 
+                        <div class="mb-4">
+                            <h3 style="color:rgb(72, 144, 252);font-size:20px;display:inline;">Scatola: </h3>
+                            <p style="color:rgb(72, 144, 252);display:inline;"><%= obj.scatola %></p>
+                        </div>
+                    <%}%>
+                    <% if(obj.num_id){ %> 
+                        <div class="mb-4">
+                            <h3 style="color:rgb(72, 144, 252);font-size:20px;display:inline;">Numero identificativo: </h3>
+                            <p style="color:rgb(72, 144, 252);display:inline;"><%= obj.num_id %></p>
+                        </div>
+                    <%}%>
                 </div>
             </div>
         </div>
