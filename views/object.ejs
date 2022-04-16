@@ -91,15 +91,25 @@
     
     <script src="/js/plugins.js"></script>
     <script>
+        $(".popup_image").on('click', ()=>{
+            w2popup.open({
+                body: '<img src="' + $(this).attr('src') +'"></img>' 
+            })
+        })
+    </script>
+    <script>
         const trashcan = document.querySelector('a.delete');
         trashcan.addEventListener('click', (e) => {
-            const endpoint = `/object/${trashcan.dataset.doc}`;
-            fetch(endpoint, {
-            method: 'DELETE',
-            })
-            .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
+            var result = confirm("confirm delete?");
+            if(result){
+                const endpoint = `/object/${trashcan.dataset.doc}`;
+                fetch(endpoint, {
+                method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+            }
         });
     </script>
     <script>

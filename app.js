@@ -11,7 +11,7 @@ const assert = require('assert');
 const tipologie = ["Altro","Maschera","Maschera Africana","Scultura","Scultura Africana","Quadro","Medaglie","Strumenti","Armi"];
 
 const app = express();
-const port = process.env.PORT || 8088;
+const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname));
 
@@ -42,13 +42,10 @@ const upload = multer({ storage: storage });
 
 //index get
 app.get('/', (req, res) => {
-  const filter = {};
-  const projection = {
-    '_id': 1, 
-    'img': 1
-  };
   var page,skip;
-  const limit = 8;
+  // si definiscono:
+  //  - page: numero di pagina a cui si accede
+  //  - skip: numero di elementi da saltare. (Sarà in base al numero di pagina e degli elementi visualizzati)
   if(!req.query.p) {
     page = 1;
     skip = 0;
@@ -56,78 +53,55 @@ app.get('/', (req, res) => {
     page = parseInt(req.query.p);
     skip = (page-1)*8;
   }
-  
-    imgModel.find({})//, { skip: skip, limit: limit })
-    //imgModel.find(filter, { projection: projection, skip: 50, limit: 8 }//, (cmdErr, result) => {
-    //  assert.equal(null, cmdErr);})
-    //.sort({ createdAt: -1 })
+
+  // si cercano nel DB tutti gli elementi, si orgina in base a num_id
+  imgModel.find({})
     .sort({num_id:-1})
     .skip(skip)
     .limit(8)
     .then(result => { 
+      // con il risultato del db si conta il numero di elementi nel DB per una questione grafica e si rimanda alla pagina iniziale
       imgModel.collection.count().then(result1 => {
-      //result.forEach(element => {
-        //console.log(element._id)  
         res.render('index', { obj: result, title: 'All Object', num:result1, page:page });
       });
-      
-    })//})
+    })
     .catch(err => {
       console.log(err);
-    })
-  
+  })
 })
 
+// pulsante di ricerca
 app.get('/search', (req,res) => {
-  //let parmeter = req.params.par;
   let value;
+  // definizione della chiave
   let query = req.query;
   var key = (Object.keys(query)[0]);
-  switch (key){
-    case "name":
-      value = query.name;
-      imgModel.find({
-        'name' : {
-          '$regex': new RegExp(value), 
-          '$options': 'i'
-        }
-      },(err, data) => {
-        //console.log(data.length())
-        res.render('index', { obj: data, title: 'Search', page:1, num:0 });
-      }).clone().catch(err => {
-        console.log(err);
-      })
-      break;
-    case "type":
-      value = query.type;
-      imgModel.find({
-        'type' : {
-          '$regex': new RegExp(value), 
-          '$options': 'i'
-        }
-      },(err, data) => {
-        //console.log(data.length())
-        res.render('index', { obj: data, title: 'All Object', page:1, num:0  });
-      }).clone().catch(err => {
-        console.log(err);
-      })
-      break;
-    case "pos":
-      value = query.pos;
-      imgModel.find({
-        'pos' : {
-          '$regex': new RegExp(value), 
-          '$options': 'i'
-        }
-      },(err, data) => {
-        //console.log(data.length())
-        res.render('index', { obj: data, title: 'All Object', page:1, num:0  });
-      }).clone().catch(err => {
-        console.log(err);
-      })
-      break;
-  }
+  
+  // Si chiama la funzione che effettua la ricerca
+  searching(req,query,res);
+
 });
+
+let searching = (req, query, res) => {
+  const myArray = Object.keys(req.query);
+  let key = myArray[0];
+  let value = req.query[key];
+  imgModel.find({
+    [key] : {
+      '$regex': new RegExp(value), 
+      '$options': 'i'
+    }
+  },(err, data) => {
+    if(err){
+      console.log(err)
+    } else {
+      res.render('index', { obj: data, title: 'All Object', page:1, num:0 });
+    }
+  }).clone().catch(err => {
+    console.log(err);
+  })
+}
+
 
 app.get('/create', (req, res) => {
     res.render('imagePage', { title: "create", array:tipologie });

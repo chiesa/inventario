@@ -12,6 +12,8 @@
                     <option value="name">nome</option>
                     <option value="type">tipo</option>
                     <option value="pos">posizione</option>
+                    <option value="num_id">identificativo</option>
+                    <option value="scatola">scatola</option>
                 </select>
                 <button id="searching" class="btn btn-outline-success tm-search-btn" type="button">
                     <i class="fas fa-search" style="color:white;"> Search </i>
@@ -24,7 +26,8 @@
             var tipo = document.getElementById('selectType').value;
             var nome = document.getElementById("text").value;
             window.history.replaceState({}, '', "search?" + tipo + "=" + nome); //set URL Param
-            $('#mainContent').load();
+            window.location.reload();
+            //$('#mainContent').load();
         }
     </script>
 
