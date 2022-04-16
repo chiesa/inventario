@@ -91,13 +91,6 @@
     
     <script src="/js/plugins.js"></script>
     <script>
-        $(".popup_image").on('click', ()=>{
-            w2popup.open({
-                body: '<img src="' + $(this).attr('src') +'"></img>' 
-            })
-        })
-    </script>
-    <script>
         const trashcan = document.querySelector('a.delete');
         trashcan.addEventListener('click', (e) => {
             var result = confirm("confirm delete?");
