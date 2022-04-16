@@ -1,17 +1,14 @@
-require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const bodyParser = require('body-parser');
-//const imgModel = require('./models.js')
-const imgModel = require('./models1.js')
-const assert = require('assert');
+const imgModel = require('./js/imageSchema.js')
+const config = require('./js/config.js')
 const tipologie = ["Altro","Maschera","Maschera Africana","Scultura","Scultura Africana","Quadro","Medaglie","Strumenti","Armi"];
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname));
 
@@ -20,12 +17,9 @@ app.use(bodyParser.json())
 // Set EJS as templating engine 
 app.set("view engine", "ejs");
 
-// remote connectio:
-//const dbURI = "mongodb+srv://ObjCreatore:lLX5NNOWEWQVpyIm@cluster0.4borb.mongodb.net/objDatabase?retryWrites=true&w=majority";
-// local connection:
-const dbURI = "mongodb://localhost:27017/try"
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(result => app.listen(port, console.log(`Listening on port ${port}`)))
+console.log(`Setup connection with mongo: ${config.mongoURI}`)
+mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(_ => app.listen(config.port, console.log(`Listening on port ${config.port}`)))
   .catch(err => console.log(err));
 
 
@@ -103,7 +97,7 @@ let searching = (req, query, res) => {
 }
 
 
-app.get('/create', (req, res) => {
+app.get('/create', (_, res) => {
     res.render('imagePage', { title: "create", array:tipologie });
 });
 

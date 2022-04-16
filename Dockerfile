@@ -1,9 +1,9 @@
 FROM node:16
 
 WORKDIR /usr/src/app
-COPY package*.json .
-RUN npm ci
+COPY package*.json ./
+RUN npm i
 COPY . .
 
-EXPOSE 8088
-CMD ["npm","start"]
+EXPOSE ${PORT}
+CMD npm start

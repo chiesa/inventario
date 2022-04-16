@@ -1,25 +1,22 @@
-version: '3'
+version: "3.9"
 
 services:  
-  mongo:
-    container_name: mongo
+  database:
     image: mongo
-    ports:
-      - '27017:27017'
-    restart: always
+    restart: unless-stopped
     volumes:
-      - mongo_db:/data/db
+      - database:/data/db
 
-  node:
+  frontend:
     build: . 
+    environment:
+      - MONGO_URI=mongodb://database:27017/try
+      - PORT=3000
     ports:
-      - 8088:8088
-    container_name: docker-node-mongo
-    restart: always
-    links: 
-      - mongo
+      - 3000:3000
+    restart: unless-stopped
     depends_on:
-      - mongo
+      - database
 
 volumes:
-  mongo_db: {}
+  database:
