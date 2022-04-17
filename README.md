@@ -3,6 +3,7 @@
 Programma funziona grazie a una docker.
 
 Per far partire il programma: 
+
 	1) aprire un terminale: andare simbolo di windows in basso a sinistra e scrivere: 
 			cmd.exe 
 	   schiacciare sull'icona e avviare il prompt dei comandi
