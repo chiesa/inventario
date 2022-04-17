@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:  
+  database:
+    image: mongo
+    restart: unless-stopped
+    volumes:
+      - database:/data/db
+
+  frontend:
+    image: ghcr.io/chiesa/node_inventario:1
+    environment:
+      - MONGO_URI=mongodb://database:27017/try
+      - PORT=3000
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    depends_on:
+      - database
+
+volumes:
+  database:
