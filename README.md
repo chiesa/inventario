@@ -39,3 +39,5 @@ In caso sia necessario far una pull del dockerfile:
 ```
 docker pull ghcr.io/chiesa/node_inventario:1
 ```
+</br></br>
+**NOTA:** è possibile vedere il codice del programma nel branch "code"
